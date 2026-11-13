@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>손홍모 | AI정보공학 학업 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== 디자인 기준 ===== */
+  :root {
+    --main: #4A5F52;          /* 주색: 딥 세이지 그린 */
+    --bg: #F7F5F2;            /* 배경색 */
+    --text: #3B3631;          /* 글자색 */
+    --sub: #8A7F75;           /* 보조 회색: 날짜·설명용 */
+    --line: rgba(59, 54, 49, 0.14);
+    --main-tint: rgba(74, 95, 82, 0.07);
+    --box: #DAD6D1;           /* 사진 자리용 회색 상자 */
+    --header-h: 64px;
+    --serif: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
+    --sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 16px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.75;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--main); outline-offset: 3px; border-radius: 2px; }
+
+  /* ===== 위쪽 메뉴 ===== */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(247, 245, 242, 0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .bar {
+    max-width: 1080px;
+    margin: 0 auto;
+    height: var(--header-h);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .menu ul { list-style: none; display: flex; gap: 2px; }
+  .menu a {
+    display: block;
+    padding: 8px 12px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--sub);
+    border-radius: 999px;
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .menu a:hover { color: var(--text); }
+  .menu a.active { color: var(--main); background: var(--main-tint); font-weight: 500; }
+
+  .menu-btn {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .menu-btn svg { width: 24px; height: 24px; margin: 0 auto; }
+
+  /* ===== 섹션 공통 ===== */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .section {
+    padding: 96px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .section:last-of-type { border-bottom: 0; }
+  .grid {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 48px;
+  }
+  .section h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--main);
+    line-height: 1.3;
+    position: sticky;
+    top: calc(var(--header-h) + 40px);
+    align-self: start;
+  }
+  .body { max-width: 720px; }
+
+  /* ===== 소개 ===== */
+  #intro { padding-top: 112px; }
+  .tagline {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(30px, 4.6vw, 46px);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .keywords { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+  .keywords li {
+    border: 1px solid var(--main);
+    color: var(--main);
+    font-size: 15px;
+    padding: 4px 14px;
+    border-radius: 999px;
+  }
+  .intro-row {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+  }
+  .photo {
+    background: var(--box);
+    aspect-ratio: 3 / 4;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .intro-text { font-size: 18px; line-height: 1.85; }
+
+  /* ===== 전공·학업 ===== */
+  .courses {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+  }
+  .course { padding: 22px 0; border-top: 1px solid var(--line); }
+  .course dt { font-family: var(--serif); font-weight: 700; font-size: 18px; margin-bottom: 6px; }
+  .course dd { color: var(--sub); font-size: 16px; line-height: 1.7; }
+
+  /* ===== 대표 프로젝트 ===== */
+  .project h3 {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+  .shot {
+    background: var(--box);
+    aspect-ratio: 16 / 9;
+    border-radius: 4px;
+    margin-bottom: 36px;
+  }
+  .star { display: grid; grid-template-columns: 44px minmax(0, 1fr); }
+  .star dt, .star dd { padding: 18px 0; border-top: 1px solid var(--line); }
+  .star dt {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--main);
+    line-height: 1.5;
+  }
+  /* A(한 일)를 가장 눈에 띄게 */
+  .star dt.a, .star dd.a {
+    background: var(--main-tint);
+    border-top: 2px solid var(--main);
+  }
+  .star dt.a { padding-left: 14px; }
+  .star dd.a { padding: 22px 20px 22px 4px; font-size: 18px; line-height: 1.9; }
+
+  /* ===== 프로젝트 카드 설명 · 자세히 보기 ===== */
+  .card-desc { color: var(--text); font-size: 17px; line-height: 1.8; margin: -8px 0 20px; }
+  .card-desc span { display: block; }
+  .more-btn {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--main);
+    background: transparent;
+    border: 1px solid var(--main);
+    border-radius: 999px;
+    padding: 8px 20px;
+    margin-bottom: 32px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .more-btn:hover { background: var(--main); color: var(--bg); }
+
+  /* ===== 팝업 ===== */
+  .detail {
+    width: min(680px, calc(100% - 32px));
+    max-height: calc(100% - 48px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+  .detail::backdrop { background: rgba(59, 54, 49, 0.45); }
+  .detail-inner {
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding: 36px 36px 40px;
+  }
+  .detail-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .detail h3 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .close-btn {
+    flex: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--sub);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 16px;
+    cursor: pointer;
+  }
+  .close-btn:hover { color: var(--text); border-color: var(--sub); }
+  .detail h4 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--main);
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .detail h4:first-of-type { margin-top: 0; }
+  .detail p { margin-top: 8px; line-height: 1.85; }
+  .todo {
+    display: inline-block;
+    font-size: 14px;
+    color: var(--sub);
+    border: 1px dashed var(--sub);
+    border-radius: 4px;
+    padding: 0 8px;
+  }
+  body.modal-open { overflow: hidden; }
+
+  /* ===== 역량 ===== */
+  .skills {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+  }
+  .skills li { padding: 20px 0; border-top: 1px solid var(--line); }
+  .skills strong { display: block; font-weight: 700; font-size: 17px; margin-bottom: 4px; }
+  .skills span.desc { color: var(--sub); font-size: 16px; }
+  .check {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--sub);
+    border: 1px dashed var(--sub);
+    border-radius: 4px;
+    padding: 0 6px;
+    margin-left: 4px;
+    vertical-align: 2px;
+  }
+
+  /* ===== FAQ ===== */
+  .faq { border-bottom: 1px solid var(--line); }
+  .faq details { border-top: 1px solid var(--line); }
+  .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "+";
+    flex: none;
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--main);
+    transition: transform 0.2s;
+  }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq summary:hover { color: var(--main); }
+  .faq .answer { padding: 0 32px 24px 0; line-height: 1.85; }
+  @media (prefers-reduced-motion: reduce) {
+    .faq summary::after { transition: none; }
+  }
+
+  /* ===== 연락처 ===== */
+  .email {
+    font-family: var(--serif);
+    font-size: clamp(22px, 3.6vw, 34px);
+    font-weight: 700;
+    color: var(--main);
+    text-decoration: none;
+    border-bottom: 2px solid var(--main);
+    padding-bottom: 2px;
+    word-break: break-all;
+  }
+  .email:hover { border-bottom-width: 3px; }
+
+  /* ===== 휴대폰 화면 ===== */
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    .bar { padding: 0 16px; }
+    .menu-btn { display: block; }
+    .menu {
+      display: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    .menu.open { display: block; }
+    .menu ul { flex-direction: column; padding: 8px 12px 16px; gap: 0; }
+    .menu a { padding: 12px; border-radius: 8px; font-size: 16px; }
+
+    .wrap { padding: 0 20px; }
+    .section { padding: 64px 0; }
+    #intro { padding-top: 56px; }
+    .grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .section h2 { position: static; font-size: 22px; }
+    .intro-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .photo { width: 150px; }
+    .intro-text { font-size: 17px; }
+    .courses, .skills { grid-template-columns: minmax(0, 1fr); }
+    .star { grid-template-columns: 36px minmax(0, 1fr); }
+    .star dd.a { font-size: 17px; padding-right: 14px; }
+    .star dt.a { padding-left: 10px; }
+    .detail-inner { padding: 24px 20px 28px; }
+    .detail h3 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="#intro">손홍모 | AI정보공학 학업 포트폴리오</a>
+    <button class="menu-btn" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+    <nav class="menu" id="site-menu" aria-label="섹션 메뉴">
+      <ul>
+        <li><a href="#intro">소개</a></li>
+        <li><a href="#study">전공·학업</a></li>
+        <li><a href="#project">대표 프로젝트</a></li>
+        <li><a href="#skills">역량</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- 소개 -->
+  <section class="section" id="intro">
+    <div class="wrap grid">
+      <h2>소개</h2>
+      <div class="body">
+        <h1 class="tagline">AI로 누구나 쓸 수 있는 서비스를 직접 만들어 보는 AI정보공학도</h1>
+        <ul class="keywords">
+          <li>AI 서비스 기획</li>
+          <li>창업 실행력</li>
+          <li>사용자 중심 설계</li>
+        </ul>
+        <div class="intro-row">
+          <div class="photo">
+            <img src="images/My_image.jpg" alt="손홍모 사진" onerror="this.remove()">
+          </div>
+          <p class="intro-text">딥러닝·머신러닝 연구실에서 AI를 공부하며, 배운 기술을 실제로 필요한 사람에게 닿는 서비스로 만드는 데 관심이 있습니다. 비전공자용 AI 음악 플랫폼 HMu와 시니어 쇼핑 보조 솔루션 CUEE를 기획·제작했고, 2026 학생 창업유망팀 300(U300)에 선발됐습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 전공·학업 -->
+  <section class="section" id="study">
+    <div class="wrap grid">
+      <h2>전공·학업</h2>
+      <dl class="body courses">
+        <div class="course">
+          <dt>인공지능을위한최적화이론</dt>
+          <dd>경사하강법 등 모델 학습의 바탕이 되는 최적화 원리를 배움</dd>
+        </div>
+        <div class="course">
+          <dt>확률및랜덤변수</dt>
+          <dd>확률분포와 랜덤변수로 데이터의 불확실성을 다루는 법을 익힘</dd>
+        </div>
+        <div class="course">
+          <dt>공학수학</dt>
+          <dd>상미분방정식 등 공학 문제를 수식으로 모델링하는 기초를 다짐</dd>
+        </div>
+        <div class="course">
+          <dt>회로이론</dt>
+          <dd>전기회로를 해석하는 기본 법칙과 해석 방법을 익힘</dd>
+        </div>
+        <div class="course">
+          <dt>정보보안</dt>
+          <dd>Burp Suite로 웹 요청을 가로채 분석하며 웹 취약점 원리를 실습함</dd>
+        </div>
+        <div class="course">
+          <dt>프로그래밍기초</dt>
+          <dd>MATLAB으로 계산·시각화 프로그램을 직접 작성함</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 대표 프로젝트 -->
+  <section class="section" id="project">
+    <div class="wrap grid">
+      <h2>대표 프로젝트</h2>
+      <article class="body project">
+        <h3>① HMu: 비전공자를 위한 AI 음악 제작 플랫폼</h3>
+        <p class="card-desc">
+          <span>작곡을 몰라도 몇 번의 선택만으로 원하는 음악을 만들 수 있게 설계한 AI 음악 제작 플랫폼이다.</span>
+          <span>1인 팀으로 기획부터 웹 프로토타입 제작까지 맡았다.</span>
+        </p>
+        <button class="more-btn" type="button" data-open="hmu-detail" aria-haspopup="dialog">자세히 보기</button>
+        <div class="shot" role="img" aria-label="HMu 이미지 자리"></div>
+        <dl class="star">
+          <dt>S</dt>
+          <dd>작곡을 배우지 않은 일반인에게 음악 제작은 여전히 진입장벽이 높았습니다.</dd>
+          <dt>T</dt>
+          <dd>누구나 몇 번의 선택만으로 원하는 음악을 만들 수 있는 플랫폼을 목표로, 1인 팀으로 기획부터 제작까지 맡았습니다.</dd>
+          <dt class="a">A</dt>
+          <dd class="a">노션에 기획서를 정리하고 사용자 흐름을 ‘랜딩 → 카테고리 설정’으로 설계했습니다. 카테고리는 보컬곡과 연주곡(BGM) 두 갈래로 나누고, 대분류 → 분위기·목적 → 장르·사운드 → 세부 설정의 4단계로 선택지를 좁혀 가게 만들었습니다. 이 흐름을 웹 프로토타입으로 구현했고, 시장 반응을 보기 위해 인스타그램·유튜브 채널과 음원 발매를 준비했습니다.</dd>
+          <dt>R</dt>
+          <dd>HMu로 경남 지역 창업 지원사업에 지원했고, 2026 학생 창업유망팀 300(U300)에 선발됐습니다.</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <!-- 역량 -->
+  <section class="section" id="skills">
+    <div class="wrap grid">
+      <h2>역량</h2>
+      <ul class="body skills">
+        <li><strong>Notion</strong><span class="desc">HMu 기획서와 사용자 흐름 정리</span></li>
+        <li><strong>HTML/CSS/JavaScript</strong><span class="desc">HMu 카테고리 설정 웹 프로토타입 구현</span></li>
+        <li><strong>Python · 딥러닝 프레임워크</strong><span class="desc">딥러닝·머신러닝 연구실 활동</span></li>
+        <li><strong>MATLAB</strong><span class="desc">프로그래밍기초 과제</span></li>
+        <li><strong>Burp Suite</strong><span class="desc">정보보안 웹 프록시 실습 과제</span></li>
+        <li><strong>AI 영상 생성 도구</strong><span class="desc">넾다세일 AI 광고제 출품 영상 제작</span></li>
+        <li><strong>AI 음악 생성 도구 · RouteNote</strong><span class="desc">HMu 음원 제작·발매</span></li>
+        <li><strong>기획·보고서 작성</strong><span class="desc">CUEE 월간 활동 보고서, 창업 지원사업 지원서</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ (2일차에 내용 추가) -->
+  <section class="section" id="faq">
+    <div class="wrap grid">
+      <h2>FAQ</h2>
+      <div class="body faq">
+        <details>
+          <summary>HMu에서 선택지를 4단계로 나눈 기준은 무엇이었고, 사용자가 실제로 쉽게 쓰는지는 어떻게 확인했나요?</summary>
+          <p class="answer">먼저 보컬곡과 연주곡(BGM) 두 갈래로 나눴다. 그다음 대분류 → 분위기·목적 → 장르·사운드 → 세부 설정의 4단계로 선택지를 좁혀 가게 했다. 사용자 반응은 인스타그램·유튜브 채널과 음원 발매로 확인하려고 준비했다.</p>
+        </details>
+        <details>
+          <summary>HMu는 1인 팀이었는데, 팀으로 일한 CUEE에서는 어떤 역할을 맡았나요?</summary>
+          <p class="answer">CUEE는 시니어 쇼핑 보조 솔루션을 만든 5인 창업팀이다. 나는 팀에서 CUEE 월간 활동 보고서와 창업 지원사업 지원서를 작성했다. 팀으로 2026 GNU 개척리더스 창업 아이디어톤 경진대회 최우수상과 G-대학생 창업유망팀 동아리 챌린지 우수상을 받았다.</p>
+        </details>
+        <details>
+          <summary>웹 프로토타입은 어떤 기술로 만들었고, 코드는 어디서 볼 수 있나요?</summary>
+          <p class="answer">HMu의 카테고리 설정 화면을 HTML/CSS/JavaScript로 만들었다.</p>
+        </details>
+        <details>
+          <summary>요즘 새로 공부하고 있는 기술이나 분야는 무엇인가요?</summary>
+          <p class="answer">딥러닝·머신러닝 연구실에서 AI를 공부하고 있다. 2026년 2월부터 3월까지는 코드잇의 Python 프로그래밍 기초 과정을 수료했다.</p>
+        </details>
+        <details>
+          <summary>AI 서비스 기획과 개발 중 어느 쪽에 더 가까운 엔지니어가 되고 싶나요?</summary>
+          <p class="answer">개발에 더 가깝다. 목표는 소프트웨어 엔지니어다. 지금까지 HMu와 CUEE를 기획·제작했다.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 연락처 -->
+  <section class="section" id="contact">
+    <div class="wrap grid">
+      <h2>연락처</h2>
+      <div class="body">
+        <a class="email" href="mailto:kitogkyo1@naver.com">kitogkyo1@naver.com</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- HMu 자세히 보기 팝업 -->
+<dialog class="detail" id="hmu-detail" aria-labelledby="hmu-detail-title">
+  <div class="detail-inner">
+    <div class="detail-top">
+      <h3 id="hmu-detail-title">HMu: 비전공자를 위한 AI 음악 제작 플랫폼</h3>
+      <button class="close-btn" type="button" data-close>닫기</button>
+    </div>
+
+    <h4>배경</h4>
+    <p>작곡을 배우지 않은 일반인에게 음악 제작은 여전히 진입장벽이 높았다.</p>
+
+    <h4>내 역할</h4>
+    <p>1인 팀으로 기획부터 제작까지 맡았다. 누구나 몇 번의 선택만으로 원하는 음악을 만들 수 있는 플랫폼을 목표로 삼았다.</p>
+
+    <h4>과정</h4>
+    <p>노션에 기획서를 정리하고, 사용자 흐름을 ‘랜딩 → 카테고리 설정’으로 설계했다. 카테고리는 보컬곡과 연주곡(BGM) 두 갈래로 나눴다. 그 안에서 대분류 → 분위기·목적 → 장르·사운드 → 세부 설정의 4단계로 선택지를 좁혀 가게 했다. 이 흐름을 웹 프로토타입으로 구현했다.</p>
+
+    <h4>결과</h4>
+    <p>시장 반응을 보기 위해 인스타그램·유튜브 채널과 음원 발매를 준비했다. HMu로 경남 지역 창업 지원사업에 지원했고, 2026 학생 창업유망팀 300(U300)에 선발됐다.</p>
+  </div>
+</dialog>
+
+<script>
+  // 자세히 보기 팝업 열고 닫기
+  document.querySelectorAll('[data-open]').forEach((btn) => {
+    const dialog = document.getElementById(btn.dataset.open);
+    if (!dialog || typeof dialog.showModal !== 'function') return;
+
+    btn.addEventListener('click', () => {
+      dialog.showModal();
+      document.body.classList.add('modal-open');
+    });
+
+    dialog.querySelectorAll('[data-close]').forEach((c) => {
+      c.addEventListener('click', () => dialog.close());
+    });
+
+    // 팝업 바깥 어두운 부분을 누르면 닫기
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    // Esc 키나 닫기 버튼으로 닫혔을 때 스크롤 다시 허용
+    dialog.addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      btn.focus();
+    });
+  });
+</script>
+
+<script>
+  // 휴대폰 메뉴 열고 닫기
+  const menuBtn = document.querySelector('.menu-btn');
+  const menu = document.getElementById('site-menu');
+  const links = menu.querySelectorAll('a');
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', '메뉴 열기');
+  }
+
+  menuBtn.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    menuBtn.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+  });
+
+  // 메뉴를 누르면 해당 섹션으로 부드럽게 이동
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      closeMenu();
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', link.getAttribute('href'));
+    });
+  });
+
+  // 지금 보고 있는 섹션을 메뉴에 표시
+  const sections = document.querySelectorAll('main .section');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach((a) => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach((s) => observer.observe(s));
+  }
+
+  // 화면을 넓히면 휴대폰 메뉴 닫기
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 760) closeMenu();
+  });
+</script>
+
+</body>
+</html>
